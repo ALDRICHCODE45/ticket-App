@@ -1,19 +1,18 @@
 import {
-  DoubleLeftOutlined,
-  DoubleRightOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Ingresar, Cola, CrearTicket, Escritorio } from "./";
-import { Layout, Menu, Button, theme } from "antd";
+import { Layout, Menu, theme } from "antd";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useContext } from "react";
+import { UiContext } from "../context/UiContext";
 
 const { Header, Sider, Content } = Layout;
 
 export const AppRouter = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const { ocultarMenu } = useContext(UiContext);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -23,11 +22,11 @@ export const AppRouter = () => {
         <Sider
           trigger={null}
           collapsible
-          collapsed={collapsed}
+          collapsed={ocultarMenu}
           collapsedWidth="0"
           breakpoint="md"
         >
-          <div className="demo-logo-vertical" />
+          <div className="logo" />
           <Menu
             style={{ padding: "10px" }}
             theme="dark"
@@ -52,22 +51,10 @@ export const AppRouter = () => {
             ]}
           />
         </Sider>
-        <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            <Button
-              type="text"
-              icon={
-                collapsed ? <DoubleRightOutlined /> : <DoubleLeftOutlined />
-              }
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
-            />
-          </Header>
+        <Layout className="site-layout">
+          <Header></Header>
           <Content
+            className="site-layout-background"
             style={{
               // margin: "24px 16px",
               padding: 24,

@@ -1,13 +1,30 @@
 import { LoginOutlined } from "@ant-design/icons";
 import { Button, Divider, Form, Input, InputNumber, Typography } from "antd";
 import "../index.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useContextUi } from "../context/hooks/useContextUi";
+import { useState } from "react";
+import { getUser } from "../context/helpers/getUser";
 const { Title, Text } = Typography;
 
+interface User {
+  agente: string;
+  escritorio: number;
+}
+
 export const Ingresar = () => {
+  useContextUi(false);
+  const [user] = useState(getUser());
+
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+
+  if (user.agente && user.escritorio) {
+    return <Navigate to="/escritorio" />;
+  }
+
+  const onFinish = ({ agente, escritorio }: User) => {
+    localStorage.setItem("agente", agente);
+    localStorage.setItem("escritorio", String(escritorio));
     navigate("/escritorio");
   };
 
